@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap');
+
+@import "tailwindcss";
+
+:root {
+  --background: #f8f8f6;
+  --foreground: #111111;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+}
+
+.brand-wordmark {
+  font-family: "Archivo Black", sans-serif;
+  letter-spacing: -0.08em;
+  transform: scaleY(1.12);
+  display: inline-block;
+}
+
+::selection {
+  background: #111111;
+  color: #f5f2ea;
+}
