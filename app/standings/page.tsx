@@ -36,22 +36,16 @@ const LEAGUES = {
   qld: {
     label: "NPL QLD Men",
     source: "squadi",
-    competitionId: "1232",
-    divisionId: "8908",
   },
 
   wa: {
     label: "NPL WA Men",
     source: "squadi",
-    competitionId: "1342",
-    divisionId: "9511",
   },
 
   nnsw: {
     label: "NPL NNSW Men",
     source: "squadi",
-    competitionId: "1295",
-    divisionId: "9313",
   },
 
   capital: {
@@ -59,6 +53,23 @@ const LEAGUES = {
     source: "external",
     externalUrl:
       "https://capital.dribl.com/ladders?season=8zdBOokmBX&date_range=default&ladder_type=regular&competition=7ZKR51arNk&league=AZNQj7XgKx&timezone=Australia%2FSydney",
+  },
+} as const;
+
+const SQUADI_KEYS = {
+  qld: {
+    divisionId: "8908",
+    competitionKey: "96ffe6ee-0ed4-40b8-a2af-a192740a830e",
+  },
+
+  wa: {
+    divisionId: "9511",
+    competitionKey: "41d0e2de-c7db-4839-a9a3-6a00c61352d6",
+  },
+
+  nnsw: {
+    divisionId: "9313",
+    competitionKey: "72f93fa2-ff07-46d8-a550-1b505e1c1df6",
   },
 } as const;
 
@@ -78,19 +89,26 @@ type TableTeam = {
   points: string;
 };
 
-function mapSquadiTeam(team: any): TableTeam {
+function mapSquadiTeam(team: any, index: number): TableTeam {
   return {
-    id: team.teamUniqueKey || String(team.id),
-    position: String(team.rk || ""),
-    name: team.name || "",
-    played: String(team.P || "0"),
-    wins: String(team.W || "0"),
-    draws: String(team.D || "0"),
-    losses: String(team.L || "0"),
-    goalsFor: String(team.F || "0"),
-    goalsAgainst: String(team.A || "0"),
-    goalDifference: String(team.goalDifference || "0"),
-    points: String(team.PTS || "0"),
+    id:
+      team.teamUniqueKey ||
+      team.teamId ||
+      team.id ||
+      team.name ||
+      String(index),
+    position: String(team.rk || team.rank || team.position || index + 1),
+    name: team.name || team.teamName || team.team?.name || "Team",
+    played: String(team.P || team.played || team.matchesPlayed || "0"),
+    wins: String(team.W || team.wins || "0"),
+    draws: String(team.D || team.draws || "0"),
+    losses: String(team.L || team.losses || "0"),
+    goalsFor: String(team.F || team.goalsFor || team.gf || "0"),
+    goalsAgainst: String(team.A || team.goalsAgainst || team.ga || "0"),
+    goalDifference: String(
+      team.goalDifference || team.GD || team.gd || team.goalDiff || "0"
+    ),
+    points: String(team.PTS || team.points || team.pts || "0"),
   };
 }
 
@@ -133,6 +151,17 @@ function findDriblLadderArray(json: any): any[] {
   return [];
 }
 
+function findSquadiLadderArray(json: any): any[] {
+  if (Array.isArray(json?.teamLadder)) return json.teamLadder;
+  if (Array.isArray(json?.ladder)) return json.ladder;
+  if (Array.isArray(json?.ladders)) return json.ladders;
+  if (Array.isArray(json?.data)) return json.data;
+  if (Array.isArray(json?.data?.teamLadder)) return json.data.teamLadder;
+  if (Array.isArray(json?.data?.ladder)) return json.data.ladder;
+
+  return [];
+}
+
 export default function StandingsPage() {
   const [leagueKey, setLeagueKey] = useState<LeagueKey>("vic");
   const [teams, setTeams] = useState<TableTeam[]>([]);
@@ -159,7 +188,14 @@ export default function StandingsPage() {
           return;
         }
 
-        const url = `https://api.squadi.com/livescores/ladder?competitionId=${league.competitionId}&divisionId=${league.divisionId}`;
+        const squadiLeague = SQUADI_KEYS[leagueKey as keyof typeof SQUADI_KEYS];
+
+        if (!squadiLeague) {
+          setLoading(false);
+          return;
+        }
+
+        const url = `https://api.squadi.com/livescores/teams/ladder/v2?divisionIds=${squadiLeague.divisionId}&competitionKey=${squadiLeague.competitionKey}&filteredOutCompStatuses=1&showForm=1&sportRefId=3`;
 
         const res = await fetch(url, {
           method: "GET",
@@ -176,7 +212,7 @@ export default function StandingsPage() {
         }
 
         const json = await res.json();
-        const ladder = json?.ladders || [];
+        const ladder = findSquadiLadderArray(json);
 
         setTeams(ladder.map(mapSquadiTeam));
         setLoading(false);
