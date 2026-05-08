@@ -220,7 +220,13 @@ export default function FixturesPage() {
     let cancelled = false;
 
     async function loadDribl() {
-      if (!league.params || !league.rounds) {
+      if (
+        league.source !== "dribl" ||
+        !("params" in league) ||
+        !("rounds" in league) ||
+        !league.params ||
+        !league.rounds
+      ) {
         return { fixtures: [], results: [] };
       }
 
