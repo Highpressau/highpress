@@ -36,16 +36,22 @@ const LEAGUES = {
   qld: {
     label: "NPL QLD Men",
     source: "squadi",
+    competitionId: "1232",
+    divisionId: "8908",
   },
 
   wa: {
     label: "NPL WA Men",
     source: "squadi",
+    competitionId: "1342",
+    divisionId: "9511",
   },
 
   nnsw: {
     label: "NPL NNSW Men",
     source: "squadi",
+    competitionId: "1295",
+    divisionId: "9313",
   },
 
   capital: {
@@ -75,16 +81,16 @@ type TableTeam = {
 function mapSquadiTeam(team: any): TableTeam {
   return {
     id: team.teamUniqueKey || String(team.id),
-    position: team.rk || "",
+    position: String(team.rk || ""),
     name: team.name || "",
-    played: team.P || "0",
-    wins: team.W || "0",
-    draws: team.D || "0",
-    losses: team.L || "0",
-    goalsFor: team.F || "0",
-    goalsAgainst: team.A || "0",
-    goalDifference: team.goalDifference || "0",
-    points: team.PTS || "0",
+    played: String(team.P || "0"),
+    wins: String(team.W || "0"),
+    draws: String(team.D || "0"),
+    losses: String(team.L || "0"),
+    goalsFor: String(team.F || "0"),
+    goalsAgainst: String(team.A || "0"),
+    goalDifference: String(team.goalDifference || "0"),
+    points: String(team.PTS || "0"),
   };
 }
 
@@ -145,9 +151,29 @@ export default function StandingsPage() {
       }
 
       if (league.source === "squadi") {
-        const res = await fetch(`/api/squadi-standings?league=${leagueKey}`, {
-          cache: "no-store",
+        const token = process.env.NEXT_PUBLIC_SQUADI_AUTH_TOKEN;
+
+        if (!token) {
+          console.error("Missing NEXT_PUBLIC_SQUADI_AUTH_TOKEN");
+          setLoading(false);
+          return;
+        }
+
+        const url = `https://api.squadi.com/livescores/ladder?competitionId=${league.competitionId}&divisionId=${league.divisionId}`;
+
+        const res = await fetch(url, {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            authorization: token,
+          },
         });
+
+        if (!res.ok) {
+          console.error("Failed to fetch Squadi standings", res.status);
+          setLoading(false);
+          return;
+        }
 
         const json = await res.json();
         const ladder = json?.ladders || [];

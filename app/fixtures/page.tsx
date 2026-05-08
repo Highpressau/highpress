@@ -14,6 +14,8 @@ type League = {
   params?: string;
   rounds?: number;
   externalUrl?: string;
+  competitionId?: string;
+  divisionId?: string;
 };
 
 const LEAGUES: Record<string, League> = {
@@ -52,14 +54,20 @@ const LEAGUES: Record<string, League> = {
   qld: {
     label: "NPL QLD Men",
     source: "squadi",
+    competitionId: "1232",
+    divisionId: "8908",
   },
   wa: {
     label: "NPL WA Men",
     source: "squadi",
+    competitionId: "1342",
+    divisionId: "9511",
   },
   nnsw: {
     label: "NPL NNSW Men",
     source: "squadi",
+    competitionId: "1295",
+    divisionId: "9313",
   },
   capital: {
     label: "NPL Capital Football Men",
@@ -122,7 +130,9 @@ function cleanTeamName(name: string) {
     .replace(" Seniors", "")
     .replace(" - NPL", "")
     .replace(" - NPL Men", "")
-    .replace(" NPLM", "");
+    .replace(" NPLM", "")
+    .replace(" - NPL M First Team", "")
+    .replace(" NPL M First Team", "");
 }
 
 function isTasFirstGrade(match: Match) {
@@ -150,6 +160,8 @@ function isSquadiResult(match: SquadiMatch) {
     match.matchEnded === true ||
     match.isResultsLocked === true ||
     match.matchStatus === "ENDED" ||
+    match.matchStatus === "COMPLETE" ||
+    match.resultStatus === "COMPLETE" ||
     match.endTime !== null ||
     match.team1ResultId !== null ||
     match.team2ResultId !== null
@@ -304,11 +316,33 @@ export default function FixturesPage() {
     }
 
     async function loadSquadi() {
-      const res = await fetch(`/api/squadi?league=${selectedLeague}`, {
-        cache: "no-store",
+      if (
+        league.source !== "squadi" ||
+        !league.competitionId ||
+        !league.divisionId
+      ) {
+        return { fixtures: [], results: [] };
+      }
+
+      const token = process.env.NEXT_PUBLIC_SQUADI_AUTH_TOKEN;
+
+      if (!token) {
+        console.error("Missing NEXT_PUBLIC_SQUADI_AUTH_TOKEN");
+        return { fixtures: [], results: [] };
+      }
+
+      const url = `https://api.squadi.com/livescores/round/matches?competitionId=${league.competitionId}&divisionId=${league.divisionId}&teamIds=&ignoreStatuses=[1]`;
+
+      const res = await fetch(url, {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          authorization: token,
+        },
       });
 
       if (!res.ok) {
+        console.error("Failed to fetch Squadi data", res.status);
         return { fixtures: [], results: [] };
       }
 
