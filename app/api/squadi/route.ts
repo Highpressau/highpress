@@ -36,10 +36,15 @@ export async function GET(request: Request) {
     const res = await fetch(url, {
       method: "GET",
       headers: {
-        accept: "application/json",
-        authorization: token,
-        referer: "https://registration.squadi.com/",
-      },
+  accept: "application/json",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
+  "access-control-allow-origin": "*",
+  authorization: token,
+  origin: "https://registration.squadi.com",
+  referer: "https://registration.squadi.com/",
+  "user-agent":
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+},
       cache: "no-store",
     });
 
