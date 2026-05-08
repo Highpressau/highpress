@@ -16,7 +16,7 @@ type League = {
   externalUrl?: string;
 };
 
-const LEAGUES = {
+const LEAGUES: Record<string, League> = {
   vic: {
     label: "NPL VIC Men",
     source: "dribl",
@@ -67,7 +67,7 @@ const LEAGUES = {
     externalUrl:
       "https://capital.dribl.com/fixtures?date_range=default&season=8zdBOokmBX&competition=7ZKR51arNk&league=AZNQj7XgKx&timezone=Australia%2FSydney",
   },
-} satisfies Record<string, League>;
+};
 
 type LeagueKey = keyof typeof LEAGUES;
 
@@ -220,22 +220,20 @@ export default function FixturesPage() {
     let cancelled = false;
 
     async function loadDribl() {
-      if (
-        league.source !== "dribl" ||
-        !("params" in league) ||
-        !("rounds" in league) ||
-        !league.params ||
-        !league.rounds
-      ) {
+      if (league.source !== "dribl" || !league.params || !league.rounds) {
         return { fixtures: [], results: [] };
       }
+
+      const driblParams = league.params;
+      const driblRounds = league.rounds;
+      const driblLeagueName = league.leagueName;
 
       async function fetchRound(
         roundNumber: number,
         resultsMode: 0 | 1
       ): Promise<Match[]> {
         const res = await fetch(
-          `${BASE}/results?${league.params}&type_round=roundrobin_${roundNumber}&results=${resultsMode}`,
+          `${BASE}/results?${driblParams}&type_round=roundrobin_${roundNumber}&results=${resultsMode}`,
           {
             headers: {
               "x-requested-with": "XMLHttpRequest",
@@ -252,7 +250,7 @@ export default function FixturesPage() {
       }
 
       const roundNumbers = Array.from(
-        { length: league.rounds },
+        { length: driblRounds },
         (_, i) => i + 1
       );
 
@@ -281,9 +279,9 @@ export default function FixturesPage() {
           return isTasFirstGrade(match);
         }
 
-        if (!league.leagueName) return true;
+        if (!driblLeagueName) return true;
 
-        return match.attributes.league_name === league.leagueName;
+        return match.attributes.league_name === driblLeagueName;
       };
 
       const allFixtures = fixtureData
