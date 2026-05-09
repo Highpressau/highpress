@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { client } from "@/sanity/lib/client";
 import { PortableText } from "@portabletext/react";
 import { urlFor } from "@/sanity/lib/image";
@@ -6,11 +7,13 @@ import SocialEmbed from "@/components/SocialEmbed";
 const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]{
   _id,
   title,
+  excerpt,
   mainImage,
   body,
   publishedAt,
   author->{name},
-  categories[]->{title}
+  categories[]->{title},
+  slug
 }`;
 
 const RELATED_QUERY = `*[_type == "post" && slug.current != $slug] | order(publishedAt desc)[0...3]{
@@ -21,6 +24,66 @@ const RELATED_QUERY = `*[_type == "post" && slug.current != $slug] | order(publi
   mainImage,
   categories[]->{title}
 }`;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+
+  const post = await client.fetch(POST_QUERY, { slug });
+
+  if (!post) {
+    return {
+      title: "Article Not Found",
+    };
+  }
+
+  const title = post.title;
+  const description =
+    post.excerpt || "Australian state league football, told properly.";
+
+  const image = post.mainImage
+    ? urlFor(post.mainImage).width(1200).height(630).url()
+    : "/og-image.jpg";
+
+  const url = `https://highpressau.com/posts/${slug}`;
+
+  return {
+    title,
+    description,
+
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: "HIGHPRESS",
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+      locale: "en_AU",
+      type: "article",
+      publishedTime: post.publishedAt,
+    },
+
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
+    },
+
+    alternates: {
+      canonical: url,
+    },
+  };
+}
 
 const components = {
   types: {
@@ -236,6 +299,8 @@ export default async function PostPage({
                 <a
                   href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
                     post.title
+                  )}&url=${encodeURIComponent(
+                    `https://highpressau.com/posts/${slug}`
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
