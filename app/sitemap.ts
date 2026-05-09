@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { client } from "@/sanity/lib/client";
 
-const siteUrl = "https://highpress.com.au";
+const siteUrl = "https://highpressau.com";
 
 type ArticleSitemapItem = {
   slug: string;

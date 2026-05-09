@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
-  const siteUrl = "https://highpress.com.au";
+  const siteUrl = "https://highpressau.com";
 
   return {
     rules: {
