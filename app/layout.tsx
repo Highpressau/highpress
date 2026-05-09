@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://highpressau.com"),
@@ -190,6 +191,8 @@ export default function RootLayout({
         <footer className="border-t border-black/10 p-8 text-sm text-gray-500">
           © 2026 HIGHPRESS
         </footer>
+
+        <Analytics />
       </body>
     </html>
   );
