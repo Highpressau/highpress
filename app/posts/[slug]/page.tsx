@@ -1,4 +1,5 @@
 export const dynamic = "force-dynamic";
+
 import type { Metadata } from "next";
 import { client } from "@/sanity/lib/client";
 import { PortableText } from "@portabletext/react";
@@ -87,6 +88,24 @@ export async function generateMetadata({
 }
 
 const components = {
+  marks: {
+    link: ({ children, value }: any) => {
+      const href = value?.href || "#";
+      const isExternal = href.startsWith("http");
+
+      return (
+        <a
+          href={href}
+          target={isExternal ? "_blank" : undefined}
+          rel={isExternal ? "noopener noreferrer" : undefined}
+          className="font-bold text-black underline decoration-black underline-offset-4 transition hover:opacity-60"
+        >
+          {children}
+        </a>
+      );
+    },
+  },
+
   types: {
     socialEmbed: ({ value }: any) => (
       <div className="my-14 flex justify-center">
