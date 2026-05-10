@@ -98,7 +98,7 @@ export default function RootLayout({
                   <div className="invisible absolute left-0 top-full z-50 w-56 translate-y-1 pt-3 opacity-0 transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
                     <div className="overflow-hidden border border-black bg-[#f2f2ee] shadow-[6px_6px_0px_#000]">
                       <a
-                        href="/fixtures-results"
+                        href="/fixtures"
                         className="block px-5 py-4 text-xs uppercase tracking-[0.25em] transition-all duration-200 hover:bg-black hover:text-white"
                       >
                         Fixtures
@@ -152,7 +152,7 @@ export default function RootLayout({
                   </a>
 
                   <a
-                    href="/fixtures-results"
+                    href="/fixtures"
                     className="block border-t border-black/10 px-5 py-4 text-xs font-black uppercase tracking-[0.22em] transition hover:bg-black hover:text-white"
                   >
                     Fixtures
