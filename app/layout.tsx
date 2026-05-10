@@ -91,9 +91,12 @@ export default function RootLayout({
                 </a>
 
                 <div className="group relative py-2">
-                  <button className="relative uppercase tracking-[0.25em] after:absolute after:left-0 after:-bottom-0 after:h-[2px] after:w-0 after:bg-black after:transition-all after:duration-300 group-hover:after:w-full">
+                  <a
+                    href="/fixtures"
+                    className="relative uppercase tracking-[0.25em] after:absolute after:left-0 after:-bottom-0 after:h-[2px] after:w-0 after:bg-black after:transition-all after:duration-300 group-hover:after:w-full"
+                  >
                     Fixtures/Results
-                  </button>
+                  </a>
 
                   <div className="invisible absolute left-0 top-full z-50 w-56 translate-y-1 pt-3 opacity-0 transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
                     <div className="overflow-hidden border border-black bg-[#f2f2ee] shadow-[6px_6px_0px_#000]">
