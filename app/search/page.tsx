@@ -12,10 +12,11 @@ const query = `
 
 export default async function SearchPage({
   searchParams,
-}: {
-  searchParams?: { q?: string };
-}) {
-  const search = searchParams?.q?.toLowerCase() || "";
+}: any) {
+  const resolvedSearchParams = await searchParams;
+
+  const search =
+    resolvedSearchParams?.q?.toLowerCase()?.trim() || "";
 
   const posts = await client.fetch(query);
 
