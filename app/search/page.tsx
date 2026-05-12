@@ -1,6 +1,28 @@
 import Link from "next/link";
+import { client } from "@/sanity/lib/client";
 
-export default function SearchPage() {
+const query = `
+*[_type == "post"] | order(publishedAt desc){
+  _id,
+  title,
+  slug,
+  publishedAt
+}
+`;
+
+export default async function SearchPage({
+  searchParams,
+}: {
+  searchParams?: { q?: string };
+}) {
+  const search = searchParams?.q?.toLowerCase() || "";
+
+  const posts = await client.fetch(query);
+
+  const filteredPosts = posts.filter((post: any) =>
+    post.title?.toLowerCase().includes(search)
+  );
+
   return (
     <main className="min-h-screen bg-[#f2f2ee] px-6 py-20 text-black md:px-16">
       <div className="mx-auto max-w-4xl">
@@ -16,6 +38,7 @@ export default function SearchPage() {
           <input
             type="search"
             name="q"
+            defaultValue={search}
             placeholder="Search clubs, players, leagues..."
             className="w-full border border-black bg-transparent px-4 py-4 text-sm font-bold uppercase tracking-[0.14em] outline-none"
           />
@@ -28,21 +51,26 @@ export default function SearchPage() {
           </button>
         </form>
 
-        <div className="mt-12 border border-black p-8">
-          <h2 className="text-2xl font-black uppercase tracking-[-0.04em]">
-            Search coming soon
-          </h2>
+        <div className="mt-12 space-y-4">
+          {search && filteredPosts.length === 0 && (
+            <div className="border border-black p-8">
+              <h2 className="text-2xl font-black uppercase">
+                No stories found
+              </h2>
+            </div>
+          )}
 
-          <p className="mt-3 text-black/60">
-            HIGHPRESS archive search is currently being built.
-          </p>
-
-          <Link
-            href="/news"
-            className="mt-6 inline-block border border-black px-5 py-3 text-xs font-black uppercase tracking-[0.2em] transition hover:bg-black hover:text-white"
-          >
-            Back to news
-          </Link>
+          {filteredPosts.map((post: any) => (
+            <Link
+              key={post._id}
+              href={`/posts/${post.slug.current}`}
+              className="block border border-black p-6 transition hover:bg-black hover:text-white"
+            >
+              <h2 className="text-2xl font-black uppercase tracking-[-0.04em]">
+                {post.title}
+              </h2>
+            </Link>
+          ))}
         </div>
       </div>
     </main>
