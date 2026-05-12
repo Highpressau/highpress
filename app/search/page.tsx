@@ -2,27 +2,56 @@ import Link from "next/link";
 import { client } from "@/sanity/lib/client";
 
 const query = `
-*[_type == "post"] | order(publishedAt desc){
+*[_type == "post"] | order(coalesce(publishedAt, _createdAt) desc){
   _id,
   title,
   slug,
-  publishedAt
+  excerpt,
+  body,
+  publishedAt,
+  _createdAt,
+  categories[]->{
+    title
+  }
 }
 `;
 
-export default async function SearchPage({
-  searchParams,
-}: any) {
+function getSearchableBodyText(body: any) {
+  if (!Array.isArray(body)) return "";
+
+  return body
+    .map((block: any) =>
+      block.children?.map((child: any) => child.text).join(" ")
+    )
+    .join(" ")
+    .toLowerCase();
+}
+
+export default async function SearchPage({ searchParams }: any) {
   const resolvedSearchParams = await searchParams;
 
-  const search =
-    resolvedSearchParams?.q?.toLowerCase()?.trim() || "";
+  const search = resolvedSearchParams?.q?.toLowerCase()?.trim() || "";
 
   const posts = await client.fetch(query);
 
-  const filteredPosts = posts.filter((post: any) =>
-    post.title?.toLowerCase().includes(search)
-  );
+  const filteredPosts = posts.filter((post: any) => {
+    const title = post.title?.toLowerCase() || "";
+    const excerpt = post.excerpt?.toLowerCase() || "";
+
+    const categories =
+      post.categories
+        ?.map((cat: any) => cat.title?.toLowerCase())
+        .join(" ") || "";
+
+    const body = getSearchableBodyText(post.body);
+
+    return (
+      title.includes(search) ||
+      excerpt.includes(search) ||
+      categories.includes(search) ||
+      body.includes(search)
+    );
+  });
 
   return (
     <main className="min-h-screen bg-[#f2f2ee] px-6 py-20 text-black md:px-16">
