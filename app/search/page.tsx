@@ -57,20 +57,25 @@ export default async function SearchPage({
               <h2 className="text-2xl font-black uppercase">
                 No stories found
               </h2>
+
+              <p className="mt-3 text-black/60">
+                Try searching for another club, player, league or topic.
+              </p>
             </div>
           )}
 
-          {filteredPosts.map((post: any) => (
-            <Link
-              key={post._id}
-              href={`/posts/${post.slug.current}`}
-              className="block border border-black p-6 transition hover:bg-black hover:text-white"
-            >
-              <h2 className="text-2xl font-black uppercase tracking-[-0.04em]">
-                {post.title}
-              </h2>
-            </Link>
-          ))}
+          {search &&
+            filteredPosts.map((post: any) => (
+              <Link
+                key={post._id}
+                href={`/posts/${post.slug.current}`}
+                className="block border border-black p-6 transition hover:bg-black hover:text-white"
+              >
+                <h2 className="text-2xl font-black uppercase tracking-[-0.04em]">
+                  {post.title}
+                </h2>
+              </Link>
+            ))}
         </div>
       </div>
     </main>
