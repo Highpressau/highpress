@@ -118,13 +118,6 @@ export default function RootLayout({
                 </div>
 
                 <a
-                  href="/search"
-                  className="relative py-2 after:absolute after:left-0 after:-bottom-0 after:h-[2px] after:w-0 after:bg-black after:transition-all after:duration-300 hover:after:w-full"
-                >
-                  Search
-                </a>
-
-                <a
                   href="/about"
                   className="relative py-2 after:absolute after:left-0 after:-bottom-0 after:h-[2px] after:w-0 after:bg-black after:transition-all after:duration-300 hover:after:w-full"
                 >
@@ -138,6 +131,27 @@ export default function RootLayout({
                   className="relative py-2 after:absolute after:left-0 after:-bottom-0 after:h-[2px] after:w-0 after:bg-black after:transition-all after:duration-300 hover:after:w-full"
                 >
                   Instagram
+                </a>
+
+                <a
+                  href="/search"
+                  aria-label="Search"
+                  className="flex items-center justify-center transition-opacity hover:opacity-60"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                    className="h-4 w-4"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
                 </a>
               </nav>
 
