@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://highpressau.com"),
+  metadataBase: new URL("https://www.highpressau.com"),
 
   title: {
     default: "HIGHPRESS",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_AU",
-    url: "https://highpressau.com",
+    url: "https://www.highpressau.com",
     siteName: "HIGHPRESS",
     title: "HIGHPRESS",
     description: "Australian state league football, told properly.",

@@ -1,70 +1,50 @@
 import type { MetadataRoute } from "next";
-import { client } from "@/sanity/lib/client";
 
-const siteUrl = "https://highpressau.com";
+export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = "https://www.highpressau.com";
 
-type ArticleSitemapItem = {
-  slug: string;
-  updatedAt: string;
-};
-
-async function getArticles(): Promise<ArticleSitemapItem[]> {
-  const query = `*[_type == "article" && defined(slug.current)]{
-    "slug": slug.current,
-    "updatedAt": _updatedAt
-  }`;
-
-  return client.fetch(query);
-}
-
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const articles = await getArticles();
-
-  const staticRoutes: MetadataRoute.Sitemap = [
+  return [
     {
-      url: siteUrl,
+      url: baseUrl,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 1,
     },
     {
-      url: `${siteUrl}/news`,
+      url: `${baseUrl}/news`,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.9,
     },
     {
-      url: `${siteUrl}/features`,
+      url: `${baseUrl}/features`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.8,
     },
     {
-      url: `${siteUrl}/fixtures-results`,
+      url: `${baseUrl}/fixtures`,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.8,
     },
     {
-      url: `${siteUrl}/standings`,
+      url: `${baseUrl}/standings`,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.8,
     },
     {
-      url: `${siteUrl}/about`,
+      url: `${baseUrl}/search`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/about`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.6,
     },
   ];
-
-  const articleRoutes: MetadataRoute.Sitemap = articles.map((article) => ({
-    url: `${siteUrl}/articles/${article.slug}`,
-    lastModified: new Date(article.updatedAt),
-    changeFrequency: "weekly",
-    priority: 0.9,
-  }));
-
-  return [...staticRoutes, ...articleRoutes];
 }
