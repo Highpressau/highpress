@@ -17,8 +17,8 @@ export const metadata: Metadata = {
     "NPL",
     "National Premier Leagues",
     "Football Australia",
-    "State league football",
     "Australian soccer",
+    "State league football",
     "HIGHPRESS",
   ],
 
@@ -90,32 +90,19 @@ export default function RootLayout({
                   Features
                 </a>
 
-                <div className="group relative py-2">
-                  <a
-                    href="/fixtures"
-                    className="relative uppercase tracking-[0.25em] after:absolute after:left-0 after:-bottom-0 after:h-[2px] after:w-0 after:bg-black after:transition-all after:duration-300 group-hover:after:w-full"
-                  >
-                    Fixtures/Results
-                  </a>
+                <a
+                  href="/fixtures"
+                  className="relative py-2 after:absolute after:left-0 after:-bottom-0 after:h-[2px] after:w-0 after:bg-black after:transition-all after:duration-300 hover:after:w-full"
+                >
+                  Fixtures/Results
+                </a>
 
-                  <div className="invisible absolute left-0 top-full z-50 w-56 translate-y-1 pt-3 opacity-0 transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
-                    <div className="overflow-hidden border border-black bg-[#f2f2ee] shadow-[6px_6px_0px_#000]">
-                      <a
-                        href="/fixtures"
-                        className="block px-5 py-4 text-xs uppercase tracking-[0.25em] transition-all duration-200 hover:bg-black hover:text-white"
-                      >
-                        Fixtures
-                      </a>
-
-                      <a
-                        href="/standings"
-                        className="block border-t border-black/10 px-5 py-4 text-xs uppercase tracking-[0.25em] transition-all duration-200 hover:bg-black hover:text-white"
-                      >
-                        Standings
-                      </a>
-                    </div>
-                  </div>
-                </div>
+                <a
+                  href="/standings"
+                  className="relative py-2 after:absolute after:left-0 after:-bottom-0 after:h-[2px] after:w-0 after:bg-black after:transition-all after:duration-300 hover:after:w-full"
+                >
+                  Standings
+                </a>
 
                 <a
                   href="/about"
@@ -124,14 +111,42 @@ export default function RootLayout({
                   About
                 </a>
 
-                <a
-                  href="https://www.instagram.com/highpressau"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="relative py-2 after:absolute after:left-0 after:-bottom-0 after:h-[2px] after:w-0 after:bg-black after:transition-all after:duration-300 hover:after:w-full"
-                >
-                  Instagram
-                </a>
+                <div className="group relative py-2">
+                  <span className="cursor-pointer uppercase tracking-[0.25em]">
+                    Socials
+                  </span>
+
+                  <div className="invisible absolute right-0 top-full z-50 w-52 translate-y-1 pt-3 opacity-0 transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+                    <div className="overflow-hidden border border-black bg-[#f2f2ee] shadow-[6px_6px_0px_#000]">
+                      <a
+                        href="https://www.instagram.com/highpressau"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block px-5 py-4 text-xs uppercase tracking-[0.25em] transition-all duration-200 hover:bg-black hover:text-white"
+                      >
+                        Instagram
+                      </a>
+
+                      <a
+                        href="https://www.facebook.com/profile.php?id=61589490604096"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block border-t border-black/10 px-5 py-4 text-xs uppercase tracking-[0.25em] transition-all duration-200 hover:bg-black hover:text-white"
+                      >
+                        Facebook
+                      </a>
+
+                      <a
+                        href="https://x.com/Highpressau"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block border-t border-black/10 px-5 py-4 text-xs uppercase tracking-[0.25em] transition-all duration-200 hover:bg-black hover:text-white"
+                      >
+                        X
+                      </a>
+                    </div>
+                  </div>
+                </div>
 
                 <a
                   href="/search"
@@ -179,7 +194,7 @@ export default function RootLayout({
                     href="/fixtures"
                     className="block border-t border-black/10 px-5 py-4 text-xs font-black uppercase tracking-[0.22em] transition hover:bg-black hover:text-white"
                   >
-                    Fixtures
+                    Fixtures/Results
                   </a>
 
                   <a
@@ -210,6 +225,24 @@ export default function RootLayout({
                     className="block border-t border-black/10 px-5 py-4 text-xs font-black uppercase tracking-[0.22em] transition hover:bg-black hover:text-white"
                   >
                     Instagram
+                  </a>
+
+                  <a
+                    href="https://www.facebook.com/profile.php?id=61589490604096"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block border-t border-black/10 px-5 py-4 text-xs font-black uppercase tracking-[0.22em] transition hover:bg-black hover:text-white"
+                  >
+                    Facebook
+                  </a>
+
+                  <a
+                    href="https://x.com/Highpressau"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block border-t border-black/10 px-5 py-4 text-xs font-black uppercase tracking-[0.22em] transition hover:bg-black hover:text-white"
+                  >
+                    X
                   </a>
                 </nav>
               </details>
