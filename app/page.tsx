@@ -282,7 +282,7 @@ export default async function HomePage() {
 
           <div className="max-w-xl">
             <a
-              href="https://www.instagram.com/nplnsw/"
+              href="https://www.instagram.com/nplaustralia/"
               target="_blank"
               rel="noopener noreferrer"
               className="group block"
