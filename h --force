@@ -1,0 +1,36 @@
+[33me49b336[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Restore article page rendering
+[33m0dfb73b[m Fix soft 404 handling and canonical metadata for posts
+[33m6bd5b69[m Restore homepage features and fix social wire
+[33mc8caf9f[m Update social wire Instagram link
+[33maf968be[m Fix clickable social wire
+[33m60e6397[m Update socials and fix standings nav
+[33m7a2c4c9[m Add articles to sitemap
+[33m9052440[m Fix canonical www SEO URLs
+[33m1253c25[m Improve search across article content
+[33ma463cbc[m Fix search functionality
+[33m6c1f48a[m Clean up search results display
+[33m79c3467[m Add live search functionality
+[33m9d42f66[m Add search icon to navigation
+[33m94a201b[m Add search to navigation
+[33mc459a27[m Add search to navigation
+[33mf52b858[m Style article hyperlinks
+[33m7aac865[m Improve fixtures nav for iPad
+[33mf698e56[m Restore fixtures navigation
+[33m8742e22[m Fix fixtures results navigation
+[33mc08609a[m Enable live Sanity updates
+[33m86881b4[m Add Vercel Analytics
+[33m7d59cf3[m Add dynamic article SEO metadata
+[33m35eb9a3[m Fix OG image filename
+[33m3f72fa7[m Add OG image
+[33mfe25f36[m Restore header with SEO metadata
+[33m46a8e96[m Add global SEO metadata
+[33m65fbb05[m Update SEO domain
+[33m41c1ee8[m Fix sitemap location
+[33m440038d[m Add sitemap and robots
+[33maec21ae[m Fix Squadi standings
+[33m82e443a[m Fetch Squadi data client side
+[33mbf4b3e1[m Match Squadi browser request headers
+[33m04e767b[m Improve Squadi API error handling
+[33m6732970[m Fix fixtures page deployment
+[33m636639f[m Fix fixtures TypeScript deployment issue
+[33mcab8160[m Initial Highpress launch build
