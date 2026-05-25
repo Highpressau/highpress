@@ -1,5 +1,3 @@
-import {Metadata} from 'next'
-import {notFound} from 'next/navigation'
 import {PortableText} from '@portabletext/react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -32,67 +30,26 @@ async function getPost(slug: string) {
   )
 }
 
-export async function generateMetadata({
-  params,
-}: Props): Promise<Metadata> {
-  const post = await getPost(params.slug)
-
-  if (!post) {
-    return {
-      title: 'Post Not Found | HIGHPRESS',
-    }
-  }
-
-  const title = post.seoTitle || post.title
-  const description =
-    post.seoDescription ||
-    'Australian state league football coverage from HIGHPRESS.'
-
-  const url = `https://www.highpressau.com/posts/${post.slug.current}`
-
-  return {
-    title,
-    description,
-
-    alternates: {
-      canonical: url,
-    },
-
-    openGraph: {
-      title,
-      description,
-      url,
-      siteName: 'HIGHPRESS',
-      type: 'article',
-      images: post.mainImage
-        ? [
-            {
-              url: urlFor(post.mainImage).width(1200).height(630).url(),
-              width: 1200,
-              height: 630,
-              alt: post.title,
-            },
-          ]
-        : [],
-    },
-
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-      images: post.mainImage
-        ? [urlFor(post.mainImage).width(1200).height(630).url()]
-        : [],
-    },
-  }
-}
-
 export default async function PostPage({params}: Props) {
   const post = await getPost(params.slug)
 
-  // IMPORTANT: Real 404 handling
   if (!post) {
-    notFound()
+    return (
+      <main className="bg-[#f2f2ee] text-black min-h-screen px-6 py-20">
+        <div className="max-w-3xl mx-auto">
+          <p className="uppercase tracking-[0.25em] text-sm mb-4">
+            Post not found
+          </p>
+
+          <Link
+            href="/news"
+            className="underline underline-offset-4 uppercase text-sm tracking-[0.2em]"
+          >
+            Back to news
+          </Link>
+        </div>
+      </main>
+    )
   }
 
   return (
@@ -111,7 +68,7 @@ export default async function PostPage({params}: Props) {
           {post.title}
         </h1>
 
-        <div className="flex items-center gap-4 text-sm uppercase tracking-[0.2em] border-b border-black pb-4 mb-8">
+        <div className="flex flex-wrap items-center gap-4 text-sm uppercase tracking-[0.2em] border-b border-black pb-4 mb-8">
           {post.author && <span>{post.author}</span>}
 
           {post.publishedAt && (
@@ -137,9 +94,11 @@ export default async function PostPage({params}: Props) {
           </div>
         )}
 
-        <div className="prose prose-lg max-w-none prose-headings:uppercase prose-headings:font-black prose-p:text-[1.15rem] prose-p:leading-relaxed">
-          <PortableText value={post.body} />
-        </div>
+        {post.body && (
+          <div className="prose prose-lg max-w-none prose-headings:uppercase prose-headings:font-black prose-p:text-[1.15rem] prose-p:leading-relaxed">
+            <PortableText value={post.body} />
+          </div>
+        )}
       </article>
     </main>
   )
