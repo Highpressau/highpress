@@ -408,7 +408,7 @@ export default async function HomePage() {
 
           <div className="max-w-xl">
             <a
-              href="https://www.instagram.com/nplaustralia/"
+              href="https://www.instagram.com/highpressau/"
               target="_blank"
               rel="noopener noreferrer"
               className="group block"
